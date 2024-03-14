@@ -6,19 +6,19 @@ for _ in range(N):
     w.append(a)
     v.append(b)
 
-V_max = 100001
-INF = 10**12
-dp = [[INF]*V_max for _ in range(N+1)]
+V_max = 1000*100+1
+dp = [[W+1]*(V_max) for _ in range(N+1)]
 dp[0][0] = 0
-
 for i in range(N):
+    wi = w[i]
+    vi = v[i]
     for j in range(V_max):
-        if j < v[i]:
-            dp[i+1][j] = dp[i][j]
-        else:
-            dp[i+1][j] = min(dp[i][j], dp[i][j-v[i]] + w[i])
+        dp[i+1][j] = dp[i][j]
+        if j >= vi and dp[i+1][j] > dp[i][j-vi] + wi:
+            dp[i+1][j] = dp[i][j-vi] + wi
 
-for i in range(V_max)[::-1]:
+ans = 0
+for i in range(V_max):
     if dp[N][i] <= W:
-        print(i)
-        break
+        ans = i
+print(ans)
