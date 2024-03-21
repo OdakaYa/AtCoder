@@ -1,20 +1,18 @@
-H, W = map(int, input().split())
+H, W = map(int ,input().split())
+MOD = 10**9 + 7
 
-m = 10**9 + 7
-
-def pow(n, m, MOD):
-    if m == 0:
+def pow(a, b):
+    if b == 0:
         return 1
     else:
-        n %= MOD
-        m %= MOD
-        return (n**(m%2) * pow(n**2, m//2, MOD)) % MOD
+        return (a**(b%2) * pow(a**2%MOD, b//2)) % MOD
 
-def Comb(a, b, MOD):
-    res = 1
-    for i in range(b):
-        res *= (a-i) * pow(i+1, MOD-2, MOD)
-        res %= MOD
-    return res
+def inv(a):
+    return pow(a, MOD-2)
 
-print(Comb(H+W-2, H-1, m))
+ans = 1
+for i in range(1, H):
+    ans *= W-1+i
+    ans *= inv(i)
+    ans %= MOD
+print(ans)
