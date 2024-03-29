@@ -1,12 +1,19 @@
 N = int(input())
-ans = (N%10) * (N%10 + 1) // 2
 
-sum9 = 45
-i = 1
-while N > 10**i:
-    n = (N//10**i) % 10
-    if n > 0:
-        ans += sum9*n + 10**i * n*(n-1)//2 + n * (N%(10**i) + 1)
-    sum9 = sum9*10 + 45*(10**i)
-    i += 1
+cnt = [0]*10
+
+b = 1
+l, c, r = N//10, N%10, 0
+while b < N:
+    for i in range(10):
+        cnt[i] += b*l
+        if i < c:
+            cnt[i] += b
+    cnt[c] += r+1
+    l, c, r = l//10, l%10, r+c*b
+    b *= 10
+
+ans = 0
+for i, n in enumerate(cnt):
+    ans += i*n
 print(ans)
