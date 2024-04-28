@@ -1,13 +1,13 @@
 N = int(input())
-P = []
-for i in range(2, N+1):
-    for p in P:
-        if i % p == 0:
-            break
-        elif p**2 > i:
-            P.append(i)
-            print(i)
-            break
-    else:
-        P.append(i)
-        print(i)
+
+Num = [True]*N
+for i in range(1, N):
+    if Num[i]:
+        n = 2*i+1
+        while n < N:
+            Num[n] = False
+            n += i+1
+
+for i in range(1, N):
+    if Num[i]:
+        print(i+1)

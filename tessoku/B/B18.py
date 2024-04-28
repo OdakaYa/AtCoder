@@ -1,17 +1,18 @@
 N, S = map(int, input().split())
 A = list(map(int, input().split()))
 
-dp = [[False, []] for _ in range(S+1)]
-dp[0][0] = True
-for i, a in enumerate(A):
-    for j in reversed(range(S+1)):
-        if dp[j][0] and j+a <= S and not dp[j+a][0]:
-            dp[j+a][0] = True
-            dp[j+a][1] = dp[j][1] + [i+1]
+dp = [False]*(S+1)
+cards = [[] for _ in range(S+1)]
+dp[0] = True
 
-if dp[S][0]:
-    ans = dp[S][1]
-    print(len(ans))
-    print(*ans)
+for i, a in enumerate(A):
+    for j in range(S+1):
+        if dp[S-j] and a-j < 1:
+            dp[S-j+a] = True
+            cards[S-j+a] = cards[S-j] + [i+1]
+
+if dp[-1]:
+    print(len(cards[-1]))
+    print(*cards[-1])
 else:
     print(-1)

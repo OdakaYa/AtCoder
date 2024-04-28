@@ -1,27 +1,34 @@
-import sys
-sys.setrecursionlimit(1 << 20)
+import queue
 
-N, M = map(int, input().split())
-G = [[] for _ in range(N)]
+R, C = map(int, input().split())
+sy, sx = map(int, input().split())
+gy, gx = map(int, input().split())
 
-for _ in range(M):
-    a, b = map(int, input().split())
-    G[a-1].append(b-1)
-    G[b-1].append(a-1)
+sx, sy = sy-1, sx-1
+gx, gy = gy-1, gx-1
 
-vis = [False]*N
-vis[0] = True
-path = []
+M = []
+for _ in range(R):
+    M.append(input())
 
-def dfs(pos):
-    path.append(pos+1)
-    vis[pos] = True
-    if pos == N-1:
-        print(*path)
-    else:
-        for x in G[pos]:
-            if not vis[x]:
-                dfs(x)
-        path.pop()
+Steps = [[-1]*C for _ in range(R)]
 
-dfs(0)
+q = queue.Queue()
+Steps[sx][sy] = 0
+q.put([sx, sy, Steps[sx][sy]])
+while not q.empty():
+    x, y, s = q.get()
+    if M[x-1][y] == "." and Steps[x-1][y] < 0:
+        Steps[x-1][y] = s+1
+        q.put([x-1, y, s+1])
+    if M[x+1][y] == "." and Steps[x+1][y] < 0:
+        Steps[x+1][y] = s+1
+        q.put([x+1, y, s+1])
+    if M[x][y-1] == "." and Steps[x][y-1] < 0:
+        Steps[x][y-1] = s+1
+        q.put([x, y-1, s+1])
+    if M[x][y+1] == "." and Steps[x][y+1] < 0:
+        Steps[x][y+1] = s+1
+        q.put([x, y+1, s+1])
+
+print(Steps[gx][gy])
