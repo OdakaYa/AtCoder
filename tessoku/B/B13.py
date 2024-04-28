@@ -1,21 +1,19 @@
 N, K = map(int, input().split())
 A = list(map(int, input().split()))
-
-Al = [0]*(N+1)
+acc = [0]*(N+1)
 for i in range(N):
-    Al[i+1] = Al[i] + A[i]
+    acc[i+1] = acc[i] + A[i]
 
-ans = 0
-val = K
-for i in range(N):
-    l = -1
+cnt = 0
+for i in range(N+1):
+    tmp = K+acc[i]
+    l = i
     r = N+1
     while r - l > 1:
         c = (r+l)//2
-        if Al[c] > val:
+        if acc[c] > tmp:
             r = c
         else:
             l = c
-    ans += l-i
-    val += A[i]
-print(ans)
+    cnt += l-i
+print(cnt)

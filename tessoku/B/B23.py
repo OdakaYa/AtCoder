@@ -1,24 +1,39 @@
 import math
+
 N = int(input())
-pos = []
-for _ in range(N):
-    pos.append(list(map(int, input().split())))
+X = [None]*N
+Y = [None]*N
 
-def get_dist(n, m):
-    return math.sqrt((pos[n][0]-pos[m][0])**2 + (pos[n][1]-pos[m][1])**2)
+for i in range(N):
+    X[i], Y[i] = map(int, input().split())
 
-dp = [[10**20]*(N-1) for _ in range(2**(N-1))]
+def get(n, m):
+    return math.sqrt((X[n]-X[m])**2 + (Y[n]-Y[m])**2)
+
+INF = 10**20
+dp = [[INF]*(N-1) for _ in range(2**(N-1))]
 for i in range(N-1):
-    dp[2**i][i] = get_dist(i, N-1)
+    dp[2**i][i] = get(i, N-1)
 
 for i in range(2**(N-1)):
     for j in range(N-1):
         if (i>>j) % 2:
-            for k in range(N-1):
-                if not (i>>k) % 2:
-                    dp[i + 2**k][k] = min(dp[i + 2**k][k], dp[i][j] + get_dist(j, k))
+            bit = i - 2**j
+            if bit > 0:
+                ind = []
+                k = 0
+                while bit>>k:
+                    if (bit>>k) % 2:
+                        ind.append(k)
+                    k += 1
+                for l in ind:
+                    tmp = dp[bit][l] + get(l, j)
+                    if dp[i][j] > tmp:
+                        dp[i][j] = tmp
 
-ans = 10**20
+ans = INF
 for i in range(N-1):
-    ans = min(ans, dp[-1][i] + get_dist(i, N-1)) 
+    tmp = dp[-1][i] + get(i, N-1)
+    if ans > tmp:
+        ans = tmp
 print(ans)
