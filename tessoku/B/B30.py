@@ -1,18 +1,18 @@
-H, W = map(int ,input().split())
-MOD = 10**9 + 7
-
-def pow(a, b):
+def pow(a, b, m):
     if b == 0:
         return 1
     else:
-        return (a**(b%2) * pow(a**2%MOD, b//2)) % MOD
+        return (a**(b%2) * pow(a**2 % m, b//2, m)) % m
 
-def inv(a):
-    return pow(a, MOD-2)
+MOD = 10**9 + 7
+H, W = map(int, input().split())
+H, W = H-1, W-1
+if H < W:
+    H, W = W, H
 
 ans = 1
-for i in range(1, H):
-    ans *= W-1+i
-    ans *= inv(i)
+for i in range(W):
+    ans *= H+1+i
+    ans *= pow(i+1, MOD-2, MOD)
     ans %= MOD
 print(ans)
