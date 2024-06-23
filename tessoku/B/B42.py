@@ -1,23 +1,18 @@
 N = int(input())
-
 A = [None]*N
 B = [None]*N
+
 for i in range(N):
     A[i], B[i] = map(int, input().split())
 
-sumpp = 0
-sumpm = 0
-summp = 0
-summm = 0
+sum_pp, sum_pm, sum_mp, sum_mm = 0, 0, 0, 0
 for i in range(N):
-    a, b = A[i], B[i]
-    if a + b > 0:
-        sumpp += a+b
+    if A[i] + B[i] > 0:
+        sum_pp += A[i] + B[i]
     else:
-        summm += -a-b
-    if a - b > 0:
-        sumpm += a-b
+        sum_mm -= A[i] + B[i]
+    if A[i] - B[i] > 0:
+        sum_pm += A[i] - B[i]
     else:
-        summp += -a+b
-ans = max(sumpp, sumpm, summp, summm)
-print(ans)
+        sum_mp -= A[i] - B[i]
+print(max(sum_pp, sum_pm, sum_mp, sum_mm))
