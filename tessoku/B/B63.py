@@ -4,31 +4,28 @@ R, C = map(int, input().split())
 sy, sx = map(int, input().split())
 gy, gx = map(int, input().split())
 
-sx, sy = sy-1, sx-1
-gx, gy = gy-1, gx-1
-
 M = []
 for _ in range(R):
-    M.append(input())
-
-Steps = [[-1]*C for _ in range(R)]
+    M.append(list(input()))
+dp = [[10**4]*C for _ in range(R)]
 
 q = queue.Queue()
-Steps[sx][sy] = 0
-q.put([sx, sy, Steps[sx][sy]])
+q.put([sy-1, sx-1])
+dp[sy-1][sx-1] = 0
 while not q.empty():
-    x, y, s = q.get()
-    if M[x-1][y] == "." and Steps[x-1][y] < 0:
-        Steps[x-1][y] = s+1
-        q.put([x-1, y, s+1])
-    if M[x+1][y] == "." and Steps[x+1][y] < 0:
-        Steps[x+1][y] = s+1
-        q.put([x+1, y, s+1])
-    if M[x][y-1] == "." and Steps[x][y-1] < 0:
-        Steps[x][y-1] = s+1
-        q.put([x, y-1, s+1])
-    if M[x][y+1] == "." and Steps[x][y+1] < 0:
-        Steps[x][y+1] = s+1
-        q.put([x, y+1, s+1])
+    x, y = q.get()
+    tmp = dp[x][y]
+    if M[x+1][y] == "." and dp[x+1][y] > tmp + 1:
+        dp[x+1][y] = tmp+1
+        q.put([x+1, y])
+    if M[x-1][y] == "." and dp[x-1][y] > tmp + 1:
+        dp[x-1][y] = tmp+1
+        q.put([x-1, y])
+    if M[x][y-1] == "." and dp[x][y-1] > tmp + 1:
+        dp[x][y-1] = tmp+1
+        q.put([x, y-1])
+    if M[x][y+1] == "." and dp[x][y+1] > tmp + 1:
+        dp[x][y+1] = tmp+1
+        q.put([x, y+1])
 
-print(Steps[gx][gy])
+print(dp[gy-1][gx-1])
